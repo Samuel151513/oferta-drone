@@ -212,9 +212,13 @@ const ProductInfo = () => {
         <span className="text-[32px] font-black text-gray-900 tracking-tight">R$ 97,00</span>
         <span className="bg-ri-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">56% OFF</span>
       </div>
-      <div className="text-sm text-gray-500 font-medium">
+      <div className="text-sm text-gray-500 font-medium mb-6">
         ou 5x de R$ 38,80 c/ juros
       </div>
+
+      <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-base h-12 rounded-lg uppercase tracking-wide shadow-sm mb-2">
+        Comprar Agora
+      </Button>
     </div>
   );
 };

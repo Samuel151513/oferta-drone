@@ -49,6 +49,9 @@ import riLogoImg from "@assets/logo-rihappy___cfa7eb65acd65ba6a052635ca6a8851b_1
 import confiBadge from "@assets/image_1764648004224.png";
 import mascot from "@assets/image_1764648596137.png";
 
+// --- Configuration ---
+const CHECKOUT_URL = "#"; // COLOQUE SEU LINK DE CHECKOUT AQUI
+
 // --- Components ---
 
 const RiLogo = ({ className = "h-8 w-auto" }: { className?: string }) => (
@@ -239,9 +242,11 @@ const ProductInfo = ({ selectedColor, setSelectedColor }: { selectedColor: 'blue
         ou 5x de R$ 38,80 c/ juros
       </div>
 
-      <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-base h-12 rounded-lg uppercase tracking-wide shadow-sm mb-2">
-        Comprar Agora
-      </Button>
+      <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="w-full block">
+        <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-base h-12 rounded-lg uppercase tracking-wide shadow-sm mb-2">
+          Comprar Agora
+        </Button>
+      </a>
     </div>
   );
 };
@@ -511,9 +516,11 @@ const StickyCTA = () => {
       <div className="flex items-center gap-2 md:hidden">
         <RiLogo className="h-8 w-auto" />
       </div>
-      <Button className="flex-1 bg-ri-green hover:bg-green-600 text-white font-black text-[15px] h-12 rounded-lg uppercase tracking-wide shadow-md transition-all active:scale-[0.98]">
-        Comprar Agora
-      </Button>
+      <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="flex-1 block">
+        <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-[15px] h-12 rounded-lg uppercase tracking-wide shadow-md transition-all active:scale-[0.98]">
+          Comprar Agora
+        </Button>
+      </a>
     </div>
   );
 };

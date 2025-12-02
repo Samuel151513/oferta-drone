@@ -30,22 +30,29 @@ import { Separator } from "@/components/ui/separator";
 import useEmblaCarousel from "embla-carousel-react";
 
 // Assets
-import blueDrone from "@assets/stock_images/blue_mini_drone_toy__2d4c5f19.jpg";
-import snowGlobe from "@assets/stock_images/disney_snow_globe_to_f38f6f3d.jpg";
-import mascot from "@assets/stock_images/toy_robot_mascot_edd80559.jpg";
+import mainFlying from "@assets/image_1764648075673.png";
+import cleanBlue from "@assets/image_1764647991480.png";
+import handHolding from "@assets/image_1764648065141.png";
+import setShot from "@assets/image_1764648091411.png";
+import blackDrone from "@assets/image_1764648083567.png";
+
+import donald from "@assets/image_1764648103423.png";
+import pluto from "@assets/image_1764648111870.png";
+
+import reviewBox from "@assets/image_1764648048319.png";
+import reviewCables from "@assets/image_1764648021762.png";
+import reviewGranite from "@assets/image_1764648038116.png";
+import reviewFloor from "@assets/image_1764648031374.png";
+import reviewBubble from "@assets/image_1764648056961.png";
+
+import riLogoImg from "@assets/logo-rihappy___cfa7eb65acd65ba6a052635ca6a8851b_1764648351800.png";
+import confiBadge from "@assets/image_1764648004224.png";
+import mascot from "@assets/stock_images/toy_robot_mascot_edd80559.jpg"; // Keeping mascot for now, or should I remove? The user didn't provide a mascot image in this batch, but they did in the previous one or I generated it. The previous prompts had a "Solzinho" mascot. The user provided images in this turn don't include the mascot, but they said "pegue essas imagens e estude um pouco dessa pagina". Wait, the last batch includes `logo-rihappy...` but no mascot. I will keep the stock mascot or try to find if I missed it. Ah, looking at the file list again. No mascot image in this batch. I'll keep the stock one or use the logo if appropriate. The footer has the mascot. I will keep the current mascot placeholder or stock image if I don't have a better one, but I will use the new Logo.
 
 // --- Components ---
 
-const RiLogo = ({ className = "text-2xl" }: { className?: string }) => (
-  <div className={`font-heading font-black tracking-tighter ${className}`}>
-    <span className="text-ri-purple">R</span>
-    <span className="text-ri-orange">i</span>
-    <span className="text-ri-green">H</span>
-    <span className="text-ri-red">A</span>
-    <span className="text-ri-blue">P</span>
-    <span className="text-ri-purple">P</span>
-    <span className="text-ri-red">Y</span>
-  </div>
+const RiLogo = ({ className = "h-8 w-auto" }: { className?: string }) => (
+  <img src={riLogoImg} alt="Ri Happy" className={className} />
 );
 
 const RiHeader = () => {
@@ -54,7 +61,7 @@ const RiHeader = () => {
       <div className="bg-ri-yellow px-4 py-3 flex items-center justify-between gap-4 shadow-sm">
         {/* Mobile Menu / Logo Area */}
         <div className="flex items-center gap-2">
-          <RiLogo />
+          <RiLogo className="h-10 w-auto" />
         </div>
 
         {/* Search Bar */}
@@ -89,7 +96,7 @@ const RiHeader = () => {
 
 const Breadcrumbs = () => (
   <div className="flex items-center gap-1.5 text-[10px] md:text-xs text-gray-500 px-4 py-3 bg-white whitespace-nowrap overflow-hidden text-ellipsis border-b border-gray-50">
-    <RiLogo className="text-sm mr-1" />
+    <RiLogo className="h-4 w-auto mr-1" />
     <ChevronRight className="w-3 h-3 text-gray-400" />
     <span className="uppercase tracking-wide font-medium">BRINQUEDOS</span>
     <ChevronRight className="w-3 h-3 text-gray-400" />
@@ -113,9 +120,9 @@ const ProductImages = () => {
     <div className="relative bg-white mb-4 group">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {[blueDrone, blueDrone, blueDrone, blueDrone].map((src, index) => (
+          {[mainFlying, cleanBlue, handHolding, setShot].map((src, index) => (
             <div className="flex-[0_0_100%] min-w-0 relative aspect-square bg-white" key={index}>
-              <img src={src} alt="Product" className="w-full h-full object-contain p-8" />
+              <img src={src} alt="Product" className="w-full h-full object-contain" />
             </div>
           ))}
         </div>
@@ -249,11 +256,11 @@ const BuyTogether = () => {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="border border-gray-100 rounded-lg p-4 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow">
-          <img src={snowGlobe} alt="Donald" className="w-24 h-24 object-contain mb-3" />
+          <img src={donald} alt="Donald" className="w-24 h-24 object-contain mb-3" />
           <p className="text-[11px] font-bold leading-tight text-gray-800">Miniatura Pato Donald - Bola de Natal</p>
         </div>
         <div className="border border-gray-100 rounded-lg p-4 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow">
-          <img src={snowGlobe} alt="Pluto" className="w-24 h-24 object-contain mb-3 grayscale opacity-80" />
+          <img src={pluto} alt="Pluto" className="w-24 h-24 object-contain mb-3" />
           <p className="text-[11px] font-bold leading-tight text-gray-800">Miniatura Pluto - Bola de Natal</p>
         </div>
       </div>
@@ -358,28 +365,35 @@ const Reviews = () => {
           date="3 dias atrás"
           rating={5}
           text="Meu filho de 7 anos amou! O drone é super seguro, as hélices são protegidas e ele consegue controlar facilmente. Chegou rápido e muito bem embalado. Recomendo demais!"
-          image={blueDrone}
+          image={reviewBox}
         />
         <ReviewItem 
           name="Carlos Eduardo M."
           date="5 dias atrás"
           rating={5}
           text="Comprei para o aniversário do meu filho e foi o presente mais esperado! Ele brinca todos os dias e o drone é bem resistente. As proteções nas hélices garantem total segurança. Excelente custo-benefício!"
-          image={blueDrone}
+          image={reviewCables}
         />
         <ReviewItem 
           name="Juliana P."
           date="1 semana atrás"
           rating={5}
           text="Produto incrível! Minha filha de 9 anos adorou e já está craques nos comandos. O material é de qualidade e super seguro para os pequenos. A bateria dura bastante tempo também!"
-          image={blueDrone}
+          image={reviewGranite}
         />
          <ReviewItem 
           name="Roberto A."
           date="1 semana atrás"
           rating={5}
           text="Melhor compra que fiz! O drone é perfeito para crianças, muito fácil de controlar e super seguro. Meu filho de 6 anos consegue pilotar sem dificuldades. Chegou antes do prazo!"
-          image={blueDrone}
+          image={reviewFloor}
+        />
+        <ReviewItem 
+          name="Fernanda L."
+          date="2 semanas atrás"
+          rating={5}
+          text="Estou muito satisfeita com a compra! O brinquedo é resistente, seguro e meu filho se diverte muito. As proteções evitam acidentes e o controle é bem intuitivo. Vale cada centavo!"
+          image={reviewBubble}
         />
       </div>
       
@@ -403,7 +417,7 @@ const Footer = () => {
             <img src={mascot} alt="Solzinho" className="w-full h-full object-cover" />
         </div>
         
-        <RiLogo className="text-4xl mb-8" />
+        <RiLogo className="h-16 w-auto mb-8" />
 
         <div className="flex gap-6 mb-10">
           <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 flex items-center justify-center text-white shadow-sm">
@@ -446,8 +460,8 @@ const Footer = () => {
 
         <h3 className="font-bold text-sm mb-4 text-gray-900">Segurança e certificações</h3>
         <div className="flex gap-3 mb-8">
-           <div className="border border-gray-200 rounded px-3 py-1.5 text-[10px] font-bold text-gray-500 flex items-center gap-1 bg-gray-50">
-             <ShieldCheck className="w-3 h-3" /> Confí
+           <div className="border border-gray-200 rounded px-2 py-1.5 flex items-center gap-1 bg-gray-50">
+             <img src={confiBadge} alt="Confi" className="h-8 w-auto" />
            </div>
            <div className="border border-gray-200 rounded px-3 py-1.5 text-[10px] font-bold text-[#F71963] flex items-center gap-1 bg-gray-50">
              <span className="text-xs">▼</span> VTEX
@@ -468,7 +482,7 @@ const StickyCTA = () => {
          <span className="text-ri-purple font-bold text-xl">R$ 97,00</span>
       </div>
       <div className="flex items-center gap-2 md:hidden">
-        <RiLogo className="text-lg" />
+        <RiLogo className="h-8 w-auto" />
       </div>
       <Button className="flex-1 bg-ri-green hover:bg-green-600 text-white font-black text-[15px] h-12 rounded-lg uppercase tracking-wide shadow-md transition-all active:scale-[0.98]">
         Comprar Agora

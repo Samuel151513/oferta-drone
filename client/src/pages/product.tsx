@@ -47,7 +47,7 @@ import reviewBubble from "@assets/image_1764648056961.png";
 
 import riLogoImg from "@assets/logo-rihappy___cfa7eb65acd65ba6a052635ca6a8851b_1764648351800.png";
 import confiBadge from "@assets/image_1764648004224.png";
-import mascot from "@assets/stock_images/toy_robot_mascot_edd80559.jpg"; // Keeping mascot for now, or should I remove? The user didn't provide a mascot image in this batch, but they did in the previous one or I generated it. The previous prompts had a "Solzinho" mascot. The user provided images in this turn don't include the mascot, but they said "pegue essas imagens e estude um pouco dessa pagina". Wait, the last batch includes `logo-rihappy...` but no mascot. I will keep the stock mascot or try to find if I missed it. Ah, looking at the file list again. No mascot image in this batch. I'll keep the stock one or use the logo if appropriate. The footer has the mascot. I will keep the current mascot placeholder or stock image if I don't have a better one, but I will use the new Logo.
+import mascot from "@assets/image_1764648596137.png";
 
 // --- Components ---
 
@@ -417,8 +417,8 @@ const Footer = () => {
   return (
     <div className="mt-12 bg-white pb-32 border-t border-gray-100">
       <div className="flex flex-col items-center pt-10">
-        <div className="w-40 h-40 bg-gray-50 rounded-full flex items-center justify-center mb-6 overflow-hidden">
-            <img src={mascot} alt="Solzinho" className="w-full h-full object-cover" />
+        <div className="w-40 h-auto mb-6 flex items-center justify-center">
+            <img src={mascot} alt="Solzinho" className="w-full h-full object-contain" />
         </div>
         
         <RiLogo className="h-16 w-auto mb-8" />

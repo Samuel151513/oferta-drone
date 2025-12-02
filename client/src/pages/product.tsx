@@ -104,7 +104,7 @@ const Breadcrumbs = () => (
   </div>
 );
 
-const ProductImages = () => {
+const ProductImages = ({ selectedColor }: { selectedColor: 'blue' | 'black' }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [current, setCurrent] = useState(0);
 
@@ -116,11 +116,20 @@ const ProductImages = () => {
     }
   }, [emblaApi]);
 
+  // Determine images based on color
+  const images = selectedColor === 'blue' 
+    ? [mainFlying, cleanBlue, handHolding, setShot]
+    : [blackDrone, mainFlying, handHolding, setShot]; // Showing black drone first if black selected
+
+  useEffect(() => {
+     if(emblaApi) emblaApi.scrollTo(0);
+  }, [selectedColor, emblaApi]);
+
   return (
     <div className="relative bg-white mb-4 group">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {[mainFlying, cleanBlue, handHolding, setShot].map((src, index) => (
+          {images.map((src, index) => (
             <div className="flex-[0_0_100%] min-w-0 relative aspect-square bg-white" key={index}>
               <img src={src} alt="Product" className="w-full h-full object-contain" />
             </div>
@@ -171,7 +180,7 @@ const ProductImages = () => {
   );
 };
 
-const ProductInfo = () => {
+const ProductInfo = ({ selectedColor, setSelectedColor }: { selectedColor: 'blue' | 'black', setSelectedColor: (c: 'blue' | 'black') => void }) => {
   return (
     <div className="px-4 pb-6 bg-white">
       <div className="flex gap-2 mb-4">
@@ -194,13 +203,27 @@ const ProductInfo = () => {
       <div className="mb-6">
         <p className="text-sm font-bold mb-3 text-gray-900">Escolha a cor:</p>
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 border-2 border-ri-purple rounded-lg px-4 py-2.5 bg-purple-50 transition-all shadow-sm">
+          <button 
+            onClick={() => setSelectedColor('blue')}
+            className={`flex items-center gap-2 border rounded-lg px-4 py-2.5 transition-all shadow-sm ${
+              selectedColor === 'blue' 
+                ? 'border-ri-purple bg-purple-50 border-2' 
+                : 'border-gray-200 hover:bg-gray-50'
+            }`}
+          >
             <div className="w-5 h-5 rounded-full bg-blue-500 shadow-sm border border-black/10"></div>
-            <span className="text-sm font-bold text-ri-purple">Azul</span>
+            <span className={`text-sm font-bold ${selectedColor === 'blue' ? 'text-ri-purple' : 'text-gray-700'}`}>Azul</span>
           </button>
-          <button className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2.5 hover:bg-gray-50 transition-all">
+          <button 
+            onClick={() => setSelectedColor('black')}
+            className={`flex items-center gap-2 border rounded-lg px-4 py-2.5 transition-all shadow-sm ${
+              selectedColor === 'black' 
+                ? 'border-ri-purple bg-purple-50 border-2' 
+                : 'border-gray-200 hover:bg-gray-50'
+            }`}
+          >
             <div className="w-5 h-5 rounded-full bg-black shadow-sm border border-white/20"></div>
-            <span className="text-sm font-bold text-gray-700">Preto</span>
+            <span className={`text-sm font-bold ${selectedColor === 'black' ? 'text-ri-purple' : 'text-gray-700'}`}>Preto</span>
           </button>
         </div>
       </div>
@@ -496,14 +519,16 @@ const StickyCTA = () => {
 };
 
 export default function RiHappyProduct() {
+  const [selectedColor, setSelectedColor] = useState<'blue' | 'black'>('blue');
+
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 pb-20">
       <RiHeader />
       <Breadcrumbs />
       
       <main className="max-w-3xl mx-auto bg-white">
-        <ProductImages />
-        <ProductInfo />
+        <ProductImages selectedColor={selectedColor} />
+        <ProductInfo selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         <Shipping />
         <BuyTogether />
         <Description />

@@ -10,10 +10,16 @@ import { useState, useEffect } from "react";
 
 // Hash location hook for subdirectory deployment support
 const useHashLocation: BaseLocationHook = () => {
-  const [loc, setLoc] = useState(window.location.hash.replace(/^#/, "") || "/");
+  // Get path from hash, ignoring query strings for routing matching
+  const getPath = () => {
+    const hash = window.location.hash.replace(/^#/, "") || "/";
+    return hash.split("?")[0];
+  };
+
+  const [loc, setLoc] = useState(getPath());
   
   useEffect(() => {
-    const handler = () => setLoc(window.location.hash.replace(/^#/, "") || "/");
+    const handler = () => setLoc(getPath());
     window.addEventListener("hashchange", handler);
     return () => window.removeEventListener("hashchange", handler);
   }, []);

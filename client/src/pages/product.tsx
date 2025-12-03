@@ -55,7 +55,10 @@ const CHECKOUT_URLS = {
   black: "https://seguro.rihappyykids.shop/checkout/Z-0338U12WEQ25"
 };
 
-const getCheckoutUrl = (color: 'blue' | 'black') => {
+// xTracky Token
+const XTRACKY_TOKEN = "7ee05865-695a-4845-a12a-d92ad8e36575";
+
+const getCheckoutUrl = (color: 'blue' | 'black', leadId: string | null) => {
   if (typeof window === 'undefined') return CHECKOUT_URLS[color];
   
   const baseUrl = CHECKOUT_URLS[color];
@@ -71,11 +74,54 @@ const getCheckoutUrl = (color: 'blue' | 'black') => {
     });
   }
 
+  // If we have a leadId from xTracky, it overrides/sets utm_source
+  if (leadId) {
+    searchParams.set('utm_source', leadId);
+  }
+
   const queryString = searchParams.toString();
   return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 };
 
 // --- Components ---
+
+const useXTrackyLeadId = () => {
+  const [leadId, setLeadId] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+       return localStorage.getItem(`XTRACKY_LEAD_ID_${XTRACKY_TOKEN}`);
+    }
+    return null;
+  });
+
+  useEffect(() => {
+    const key = `XTRACKY_LEAD_ID_${XTRACKY_TOKEN}`;
+    
+    const check = () => {
+      const stored = localStorage.getItem(key);
+      if (stored !== leadId) {
+        setLeadId(stored);
+      }
+    };
+
+    const interval = setInterval(check, 1000);
+    
+    // Also listen for storage events
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === key) {
+        check();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorage);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, [leadId]);
+
+  return leadId;
+};
 
 const RiLogo = ({ className = "h-8 w-auto" }: { className?: string }) => (
   <img src={riLogoImg} alt="Ri Happy" className={className} />
@@ -207,6 +253,8 @@ const ProductImages = ({ selectedColor }: { selectedColor: 'blue' | 'black' }) =
 };
 
 const ProductInfo = ({ selectedColor, setSelectedColor }: { selectedColor: 'blue' | 'black', setSelectedColor: (c: 'blue' | 'black') => void }) => {
+  const leadId = useXTrackyLeadId();
+  
   return (
     <div className="px-4 pb-6 bg-white">
       <div className="flex gap-2 mb-4">
@@ -265,7 +313,7 @@ const ProductInfo = ({ selectedColor, setSelectedColor }: { selectedColor: 'blue
         ou 5x de R$ 38,80 c/ juros
       </div>
 
-      <a href={getCheckoutUrl(selectedColor)} target="_blank" rel="noopener noreferrer" className="w-full block">
+      <a href={getCheckoutUrl(selectedColor, leadId)} target="_blank" rel="noopener noreferrer" className="w-full block">
         <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-base h-12 rounded-lg uppercase tracking-wide shadow-sm mb-2">
           Comprar Agora
         </Button>

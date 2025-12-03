@@ -10,8 +10,8 @@ import FileManager from "@/pages/file-manager";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={RiHappyProduct} />
-      <Route path="/files" component={FileManager} />
+      <Route path="/" component={FileManager} />
+      <Route path="/loja" component={RiHappyProduct} />
       <Route component={NotFound} />
     </Switch>
   );

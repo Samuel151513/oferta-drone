@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { 
   Search, 
   LayoutGrid, 
@@ -15,14 +16,80 @@ import {
   FolderPlus,
   Home,
   ChevronRight,
-  MoreVertical
+  Download,
+  Loader2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const FileManager = () => {
+  const [location, setLocation] = useLocation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const handleFileClick = (fileName: string) => {
+    if (fileName === "index.html") {
+      startDownload();
+    }
+  };
+
+  const startDownload = () => {
+    setIsDownloading(true);
+    setProgress(0);
+    
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setLocation("/loja");
+          }, 500);
+          return 100;
+        }
+        return prev + 5;
+      });
+    }, 100);
+  };
+
+  // Filter logic could go here, but for now just visual
+  const files = [
+    { name: "css", type: "folder", date: "há 8 horas", size: "-" },
+    { name: "fonts", type: "folder", date: "há 8 horas", size: "-" },
+    { name: "images", type: "folder", date: "há 8 horas", size: "-" },
+    { name: "js", type: "folder", date: "há 8 horas", size: "-" },
+    { name: "index.html", type: "file", date: "há 8 horas", size: "10.69 KB" },
+  ].filter(f => f.name.toLowerCase().includes(searchTerm.toLowerCase()));
+
   return (
     <div className="min-h-screen bg-[#1e2124] text-gray-300 font-sans flex flex-col overflow-hidden">
+      {/* Dialog for Download Simulation */}
+      <Dialog open={isDownloading} onOpenChange={() => {}}>
+        <DialogContent className="bg-[#2d3035] border-gray-700 text-gray-200 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Download className="w-5 h-5 text-blue-500" />
+              Baixando arquivos...
+            </DialogTitle>
+            <DialogDescription className="text-gray-400">
+              Preparando o ambiente da loja segura. Por favor, aguarde.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 space-y-4">
+            <div className="flex justify-between text-xs text-gray-400">
+              <span>index.html</span>
+              <span>{progress}%</span>
+            </div>
+            <Progress value={progress} className="h-2 bg-gray-700" indicatorClassName="bg-blue-500" />
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              Verificando integridade dos arquivos...
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Header */}
       <header className="h-14 bg-[#2d3035] flex items-center justify-between px-4 shadow-sm shrink-0">
         <div className="flex items-center gap-4 w-1/3">
@@ -32,6 +99,8 @@ const FileManager = () => {
           <div className="relative w-full max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Pesquisar..." 
               className="bg-[#1e2124] border-none h-9 pl-10 text-sm text-gray-300 placeholder:text-gray-500 focus-visible:ring-1 focus-visible:ring-gray-600"
             />
@@ -53,7 +122,7 @@ const FileManager = () => {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside className="w-64 bg-[#212428] flex flex-col border-r border-gray-700/50">
+        <aside className="w-64 bg-[#212428] flex flex-col border-r border-gray-700/50 hidden md:flex">
           <div className="p-4 space-y-1">
             <div className="flex items-center gap-3 px-3 py-2 bg-[#2c3036] text-white rounded-md cursor-pointer">
               <Folder className="w-5 h-5 text-blue-400" />
@@ -90,7 +159,7 @@ const FileManager = () => {
         {/* Main Content */}
         <main className="flex-1 flex flex-col bg-[#1e2124]">
           {/* Breadcrumbs */}
-          <div className="h-12 border-b border-gray-700/50 flex items-center px-4 gap-2 text-sm text-gray-400">
+          <div className="h-12 border-b border-gray-700/50 flex items-center px-4 gap-2 text-sm text-gray-400 overflow-x-auto">
             <Home className="w-4 h-4" />
             <ChevronRight className="w-4 h-4 text-gray-600" />
             <span className="hover:text-gray-200 cursor-pointer">public_html</span>
@@ -115,15 +184,10 @@ const FileManager = () => {
 
           {/* File List */}
           <div className="flex-1 overflow-auto">
-            {[
-              { name: "css", type: "folder", date: "há 8 horas", size: "-" },
-              { name: "fonts", type: "folder", date: "há 8 horas", size: "-" },
-              { name: "images", type: "folder", date: "há 8 horas", size: "-" },
-              { name: "js", type: "folder", date: "há 8 horas", size: "-" },
-              { name: "index.html", type: "file", date: "há 8 horas", size: "10.69 KB" },
-            ].map((item, i) => (
+            {files.map((item, i) => (
               <div 
                 key={i} 
+                onClick={() => handleFileClick(item.name)}
                 className="grid grid-cols-12 px-4 py-3 border-b border-gray-700/30 hover:bg-[#2c3036] cursor-pointer group transition-colors items-center"
               >
                 <div className="col-span-6 flex items-center gap-3">
@@ -147,6 +211,11 @@ const FileManager = () => {
                 </div>
               </div>
             ))}
+            {files.length === 0 && (
+              <div className="p-8 text-center text-gray-500 text-sm">
+                Nenhum arquivo encontrado. Tente pesquisar por "index.html"
+              </div>
+            )}
           </div>
         </main>
       </div>

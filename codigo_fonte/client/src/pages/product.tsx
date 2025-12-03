@@ -55,6 +55,26 @@ const CHECKOUT_URLS = {
   black: "https://seguro.rihappyykids.shop/checkout/Z-0338U12WEQ25"
 };
 
+const getCheckoutUrl = (color: 'blue' | 'black') => {
+  if (typeof window === 'undefined') return CHECKOUT_URLS[color];
+  
+  const baseUrl = CHECKOUT_URLS[color];
+  const searchParams = new URLSearchParams(window.location.search);
+  
+  // Also try to parse query params from hash if they exist (e.g. #/loja?foo=bar)
+  const hash = window.location.hash;
+  if (hash.includes('?')) {
+    const hashQuery = hash.split('?')[1];
+    const hashParams = new URLSearchParams(hashQuery);
+    hashParams.forEach((value, key) => {
+      searchParams.set(key, value);
+    });
+  }
+
+  const queryString = searchParams.toString();
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
+};
+
 // --- Components ---
 
 const RiLogo = ({ className = "h-8 w-auto" }: { className?: string }) => (
@@ -245,7 +265,7 @@ const ProductInfo = ({ selectedColor, setSelectedColor }: { selectedColor: 'blue
         ou 5x de R$ 38,80 c/ juros
       </div>
 
-      <a href={CHECKOUT_URLS[selectedColor]} target="_blank" rel="noopener noreferrer" className="w-full block">
+      <a href={getCheckoutUrl(selectedColor)} target="_blank" rel="noopener noreferrer" className="w-full block">
         <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-base h-12 rounded-lg uppercase tracking-wide shadow-sm mb-2">
           Comprar Agora
         </Button>
@@ -519,7 +539,7 @@ const StickyCTA = ({ selectedColor }: { selectedColor: 'blue' | 'black' }) => {
       <div className="flex items-center gap-2 md:hidden">
         <RiLogo className="h-8 w-auto" />
       </div>
-      <a href={CHECKOUT_URLS[selectedColor]} target="_blank" rel="noopener noreferrer" className="flex-1 block">
+      <a href={getCheckoutUrl(selectedColor)} target="_blank" rel="noopener noreferrer" className="flex-1 block">
         <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-[15px] h-12 rounded-lg uppercase tracking-wide shadow-md transition-all active:scale-[0.98]">
           Comprar Agora
         </Button>

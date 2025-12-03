@@ -51,8 +51,8 @@ import mascot from "@assets/image_1764648596137.png";
 
 // --- Configuration ---
 const CHECKOUT_URLS = {
-  blue: "#", // LINK CHECKOUT AZUL
-  black: "#" // LINK CHECKOUT PRETO
+  blue: "https://seguro.rihappyykids.shop/checkout/Z-03XCF12LPZ25",
+  black: "https://seguro.rihappyykids.shop/checkout/Z-0338U12WEQ25"
 };
 
 // --- Components ---

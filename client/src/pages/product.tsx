@@ -50,7 +50,10 @@ import confiBadge from "@assets/image_1764648004224.png";
 import mascot from "@assets/image_1764648596137.png";
 
 // --- Configuration ---
-const CHECKOUT_URL = "#"; // COLOQUE SEU LINK DE CHECKOUT AQUI
+const CHECKOUT_URLS = {
+  blue: "#", // LINK CHECKOUT AZUL
+  black: "#" // LINK CHECKOUT PRETO
+};
 
 // --- Components ---
 
@@ -242,7 +245,7 @@ const ProductInfo = ({ selectedColor, setSelectedColor }: { selectedColor: 'blue
         ou 5x de R$ 38,80 c/ juros
       </div>
 
-      <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="w-full block">
+      <a href={CHECKOUT_URLS[selectedColor]} target="_blank" rel="noopener noreferrer" className="w-full block">
         <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-base h-12 rounded-lg uppercase tracking-wide shadow-sm mb-2">
           Comprar Agora
         </Button>
@@ -507,7 +510,7 @@ const Footer = () => {
   );
 };
 
-const StickyCTA = () => {
+const StickyCTA = ({ selectedColor }: { selectedColor: 'blue' | 'black' }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 flex items-center justify-between gap-4 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
       <div className="hidden md:block">
@@ -516,7 +519,7 @@ const StickyCTA = () => {
       <div className="flex items-center gap-2 md:hidden">
         <RiLogo className="h-8 w-auto" />
       </div>
-      <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="flex-1 block">
+      <a href={CHECKOUT_URLS[selectedColor]} target="_blank" rel="noopener noreferrer" className="flex-1 block">
         <Button className="w-full bg-ri-green hover:bg-green-600 text-white font-black text-[15px] h-12 rounded-lg uppercase tracking-wide shadow-md transition-all active:scale-[0.98]">
           Comprar Agora
         </Button>
@@ -544,7 +547,7 @@ export default function RiHappyProduct() {
         <Footer />
       </main>
 
-      <StickyCTA />
+      <StickyCTA selectedColor={selectedColor} />
     </div>
   );
 }
